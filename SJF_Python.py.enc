@@ -1,0 +1,89 @@
+n=input("Enter Number of Processes: ")
+name={}
+arr={}
+bur={}
+
+n_name={}
+n_arr={}
+n_bur={}
+n_wt={}
+n_tt={}
+
+avg_waiting=0
+avg_turnaround=0
+total_time=0
+
+def sort(a,b,c,size):
+    for i in range (size-1):
+        for j in range (size-i-1):
+            if(a[j] >a[j+1]):
+                temp=a[j]
+                a[j]=a[j+1]
+                a[j+1]=temp
+
+                temp=b[j]
+                b[j]=b[j+1]
+                b[j+1]=temp
+
+                temp=c[j]
+                c[j]=c[j+1]
+                c[j+1]=temp
+
+print("\n")
+
+for i in range(n):
+    print "For Process ",i+1,""
+    name[i]=raw_input("Enter Name of Process:  ")
+    arr[i]=int(input("Enter Arrival Time of Process: "))
+    bur[i]=int(input("Enter Burst Time of Process: "))
+    print("\n")
+
+sort(bur,arr,name,n)
+
+avg_waiting=0
+avg_turnaround=0
+total_time=0
+j=0
+for x in range(100):
+    for i in range(len(arr)):
+        if arr[i]<=total_time:
+            start=total_time
+            print name[i], " is Started at ",start
+            total_time=total_time+bur[i]
+            End=total_time
+            print name[i]," Executed at ",End
+            
+            n_wt[j]=start-arr[i]
+            n_tt[j]=End-arr[i]
+           
+            n_arr[j]=arr.pop(i)
+            n_bur[j]=bur.pop(i)
+            n_name[j]=name.pop(i)
+            i=0
+            j=j+1
+
+        else:
+            total_time+=1
+
+
+
+
+import os
+os.system('cls')
+
+print ("Process Name\tArrival Time\tBurst Time\tWaiting Time\tTurnaround Time |")
+print ("----------------------------------------------------------------------------------------------------------------------------------|")
+for i in range (n):
+    print n_name[i],"\t\t",n_arr[i],"\t\t",n_bur[i],"\t\t",n_wt[i],"\t\t",n_tt[i],"\t               |"
+print ("__________________________________________________________________________________________|")
+
+
+for i in range(n):
+    avg_waiting+=n_wt[i]
+    avg_turnaround+=n_tt[i]
+
+avg_waiting=float(avg_waiting)/n
+avg_turnaround=float(avg_turnaround)/n
+
+print "\n\nAverage Waiting Time::  ",avg_waiting
+print "\nAverage Turnaround Time::  ",avg_turnaround,"\n"
